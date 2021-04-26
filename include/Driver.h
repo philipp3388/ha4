@@ -24,7 +24,7 @@ public:
 
     Driver()
     {
-
+        rating = 0;
     }
 
     Driver(string n, string p, Car t)
@@ -33,6 +33,7 @@ public:
         password = p;
         car = t;
         status = 0;
+        rating = 0;
     }
 
     Driver(string n, string p, vector <double> m, double r, Car c, bool s)

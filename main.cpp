@@ -3,6 +3,7 @@
 #include "Order.h";
 #include "Passenger.h";
 #include "Driver.h";
+#include "Admin.h";
 #include "Date.h";
 
 using namespace std;
@@ -13,6 +14,7 @@ Date actDate;
 int numberOfPassengers, numberOfDrivers;
 vector <Passenger> passengerDataBase;
 vector <Driver> driverDataBase;
+vector <Admin> adminDatabase;
 vector <pair <Order, string>> freeOrders;
 vector <pair <Order, pair<pair <string, string>, pair <string, string>>>> takenOrders;
 
@@ -100,6 +102,23 @@ void LoadingDataBaseOfDrivers()
     }
 
     numberOfDrivers = driverDataBase.size();
+}
+
+void LoadingDataBaseOfAdmins()
+{
+    ifstream inA("DataBaseOfAdmins.txt");
+
+    int num;
+
+    while (inA >> num)
+    {
+        string name, password;
+        inA >> name >> password;
+
+        Admin tmpAdmin(name, password);
+
+        adminDatabase.push_back(tmpAdmin);
+    }
 }
 
 void LoadingFreeOrders()
@@ -201,6 +220,14 @@ void SavingDataBaseOfDrivers()
 
         outdbD << endl;
     }
+}
+
+void DavingDataBaseOfAdmins()
+{
+    ofstream outA("DataBaseOfAdmins.txt");
+
+    for (int i = 0; i < adminDatabase.size(); i++)
+        outA << i << ' ' << adminDatabase[i].getName() << ' ' << adminDatabase[i].getPassword() << endl;
 }
 
 void SavingFreeOrders()
@@ -405,14 +432,63 @@ void driverGateway()
     cout << "account does not exist" << endl;
 }
 
+void adminGateway()
+{
+    string login, password;
+
+    cout << "Login: ";
+    cin >> login;
+    cout << "Password: ";
+    cin >> password;
+
+    for (int i = 0; i < adminDatabase.size(); i++)
+        if (adminDatabase[i].getName() == login && adminDatabase[i].getPassword() == password)
+        {
+            while (true)
+            {
+                cout << "ApproveCar / Drivers / Passengers / Logout" << endl;
+                    string command; cin >> command;
+
+                if (command == "Logout") break;
+
+                if (command == "Drivers")
+                {
+                    for (int i = 0; i < driverDataBase.size(); i++)
+                        cout << i + 1 << ' ' << driverDataBase[i].getName() << ' ' << driverDataBase[i].getPassword() << endl;
+
+                    cout << "Ban someone? Type either number or '0' for cancel" << endl;
+                    {
+                        int ans; cin >> ans;
+                        if (ans > 0) driverDataBase.erase(driverDataBase.begin() + ans - 1);
+                    }
+                }
+
+                if (command == "Passengers")
+                {
+                    for (int i = 0; i < passengerDataBase.size(); i++)
+                        cout << i + 1 << ' ' << passengerDataBase[i].getName() << ' ' << passengerDataBase[i].getPassword() << endl;
+
+                    cout << "Ban someone? Type either number or '0' for cancel" << endl;
+                    {
+                        int ans; cin >> ans;
+                        if (ans > 0) passengerDataBase.erase(passengerDataBase.begin() + ans - 1);
+                    }
+                }
+            }
+        }
+
+    cout << "account does not exist" << endl;
+}
+
 void Login()
 {
-    cout << "Login as who? (as a Passenger or Driver)" << endl;
+    cout << "Login as who? (as a Passenger, Driver or Admin)" << endl;
 
     string answer; cin >> answer;
 
     if (answer == "Passenger") passengerGateway();
     if (answer == "Driver") driverGateway();
+    if (answer == "Admin") adminGateway();
 }
 
 void RegisterPassenger()
@@ -477,6 +553,7 @@ int main()
 
     LoadingDataBaseOfPassengers();
     LoadingDataBaseOfDrivers();
+    LoadingDataBaseOfAdmins();
     LoadingFreeOrders();
     LoadingTakenOrders();
 
@@ -488,6 +565,7 @@ int main()
     SavingDataBaseOfDrivers();
     SavingFreeOrders();
     SavingTakenOrders();
+    DavingDataBaseOfAdmins();
 
     return 0;
 }
