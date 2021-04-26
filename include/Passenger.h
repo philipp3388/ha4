@@ -16,9 +16,11 @@ private:
 
     vector <Order> history;
 
+    string payments;
+
 public:
 
-    Passenger(string n, string p, vector <double> m, double r, vector <Order> h)
+    Passenger(string n, string p, vector <double> m, double r, vector <Order> h, string pmt)
     {
         name = n;
         password = p;
@@ -27,6 +29,7 @@ public:
         rating = r;
 
         history = h;
+        payments = pmt;
     }
 
     Passenger(string n, string p)
@@ -58,6 +61,21 @@ public:
     vector <Order> getHistory()
     {
         return history;
+    }
+
+    string getPayments()
+    {
+        return payments;
+    }
+
+    void pushOrder(Order a)
+    {
+        history.push_back(a);
+    }
+
+    void editPayment(string p)
+    {
+        payments = p;
     }
 
 };

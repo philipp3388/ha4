@@ -38,6 +38,11 @@ public:
         return date;
     }
 
+    bool operator == (const Order &a) const
+    {
+        return adressFrom == a.adressFrom;
+    }
+
 };
 
 #endif // ORDER_H

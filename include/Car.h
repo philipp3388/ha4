@@ -9,7 +9,7 @@ struct Car
 private:
 
     string model;
-    int carType;
+    string carType;
     int currentCoordinates;
     string color;
     string number;
@@ -19,6 +19,11 @@ public:
     Car()
     {
 
+    }
+
+    Car(string type)
+    {
+        carType = type;
     }
 
     Car(string m, int cT, int cC, string c, string n)
@@ -35,7 +40,7 @@ public:
         return model;
     }
 
-    int getCarType()
+    string getCarType()
     {
         return carType;
     }
@@ -56,5 +61,6 @@ public:
     }
 
 };
+
 
 #endif // CAR_H

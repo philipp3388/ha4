@@ -2,6 +2,7 @@
 #define DRIVER_H
 
 #include <bits/stdc++.h>
+#include "Car.h";
 using namespace std;
 
 struct Driver
@@ -11,6 +12,8 @@ private:
     string name;
     string password;
 
+    int sizeOfMarksVector;
+
     vector <double> marks;
     double rating;
 
@@ -18,6 +21,19 @@ private:
     bool status;
 
 public:
+
+    Driver()
+    {
+
+    }
+
+    Driver(string n, string p, Car t)
+    {
+        name = n;
+        password = p;
+        car = t;
+        status = 0;
+    }
 
     Driver(string n, string p, vector <double> m, double r, Car c, bool s)
     {
@@ -59,6 +75,23 @@ public:
     bool getStatus()
     {
         return status;
+    }
+
+    istream& operator >> (istream& is)
+    {
+        is >> name >> password >> sizeOfMarksVector;
+
+        for (int i = 0; i < sizeOfMarksVector; i++)
+            is >> marks[i];
+
+        is >> rating;
+        //is >> car;
+        is >> status;
+    }
+
+    changeStatus(bool a)
+    {
+        status = a;
     }
 
 };
